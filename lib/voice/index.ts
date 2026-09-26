@@ -1,4 +1,5 @@
 import { browserVoice } from "./browser";
+import { grokVoice } from "./grok";
 
 export interface VoiceHandlers {
   onPartial?: (t: string) => void;
@@ -17,6 +18,6 @@ export interface VoiceEngine {
 
 export function getVoiceEngine(): VoiceEngine {
   const requested = process.env.NEXT_PUBLIC_VOICE_ENGINE;
-  if (requested === "grok") return browserVoice;
-  return browserVoice;
+  if (requested === "browser") return browserVoice;
+  return grokVoice;
 }

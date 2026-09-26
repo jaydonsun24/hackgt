@@ -32,6 +32,9 @@ export const env = {
   get xaiImageModel() {
     return read("XAI_IMAGE_MODEL") || "grok-imagine-image-2.0";
   },
+  get xaiVoiceId() {
+    return (read("XAI_VOICE_ID") || "rex").trim() || "rex";
+  },
   get ctgovBaseUrl() {
     return trimSlash(read("CTGOV_BASE_URL") || "https://clinicaltrials.gov/api/v2");
   },

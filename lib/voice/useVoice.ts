@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { heardWords } from "./hear";
 import { getVoiceEngine, type VoiceEngine } from "./index";
 
 export function useVoice() {
@@ -33,9 +34,10 @@ export function useVoice() {
     setListening(true);
     engine.startListening(
       {
-        onPartial: (text) => setTranscript(text),
+        onPartial: (text) => setTranscript(heardWords(text)),
         onFinal: (text) => {
-          if (text) setTranscript(text);
+          const heard = heardWords(text);
+          if (heard) setTranscript(heard);
           if (closingRef.current) {
             closingRef.current = false;
             setStatus(null);

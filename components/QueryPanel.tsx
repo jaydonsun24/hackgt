@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { DEMO_QUERIES } from "@/lib/demo/queries";
+import { heardWords } from "@/lib/voice/hear";
 import { LANGUAGE_OPTIONS } from "@/lib/format";
 import type { useVoice } from "@/lib/voice/useVoice";
 
@@ -58,7 +59,7 @@ export function QueryPanel({
     const spoken = voice.transcript.trim();
     if (!spoken || !sessionRef.current) return;
     capturedRef.current = true;
-    setText(voice.transcript);
+    setText(heardWords(voice.transcript));
   }, [voice.listening, voice.transcript, setText]);
 
   useEffect(() => {

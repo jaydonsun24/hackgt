@@ -10,7 +10,7 @@ Nothing about the patient is stored. There is no login and no database.
 2. The clinic ZIP is looked up in bundled Census data. No live geocoding service is called.
 3. ClinicalTrials.gov is searched for recruiting studies near that point.
 4. The studies are ranked with reasons. Any trial id that was not in the search results is dropped.
-5. A short readback is spoken in the browser.
+5. A short readback is spoken aloud.
 6. The referral packet and the patient handout can be printed. The handout illustration is optional and is skipped if image generation fails.
 7. Equity Lens shows the clinic county's CDC Social Vulnerability Index and the distance to the nearest match.
 8. The sponsor page shows simulated referral numbers. Those numbers are not real clinic activity.
@@ -21,9 +21,9 @@ Nothing about the patient is stored. There is no login and no database.
 - Tailwind CSS
 - ClinicalTrials.gov API v2
 - xAI API, OpenAI-compatible: `grok-4.6` for extraction, ranking, and handouts; `grok-imagine-image-2.0` for the handout illustration
-- Browser Web Speech API for the microphone and readback
+- Grok text-to-speech (`POST /v1/tts`, voice `rex`) speaks the readback and the handout when `XAI_API_KEY` is set. Hold to talk sends the recording to Grok speech-to-text (`POST /v1/stt`). The recording is not stored. If the key is missing or either call fails, the browser voice speaks and the browser speech engine transcribes instead.
 
-Grok Voice is not connected. If `NEXT_PUBLIC_VOICE_ENGINE=grok`, the app still uses the browser engine.
+`NEXT_PUBLIC_VOICE_ENGINE=browser` keeps both listening and speaking in the browser.
 
 ## Data sources
 
@@ -98,7 +98,8 @@ That writes match results for the three examples and a Spanish handout for the l
 | `XAI_IMAGE_MODEL` | `grok-imagine-image-2.0` |
 | `CTGOV_BASE_URL` | `https://clinicaltrials.gov/api/v2` |
 | `DEFAULT_RADIUS_MILES` | `75` |
-| `NEXT_PUBLIC_VOICE_ENGINE` | `browser` |
+| `NEXT_PUBLIC_VOICE_ENGINE` | `grok` |
+| `XAI_VOICE_ID` | `rex` |
 
 4. Optional, and worth doing before the expo: run `npx tsx scripts/build-demo-cache.ts` locally and commit `data/demo-cache/*.json`. Demo mode on the deployed site only works if those files are in the deployment.
 5. Open the deployed URL. Run the three example chips with Demo mode off, then again with Demo mode on.
