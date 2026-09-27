@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     withIllustration: Boolean(body.withIllustration),
   };
 
-  if (request.headers.get("x-trialpath-demo") === "1") {
+  if (request.headers.get("x-refera-demo") === "1") {
     const cached = readHandoutCache(handoutRequest);
     if (cached) return Response.json(cached, { headers: noStore });
   }

@@ -81,7 +81,7 @@ let sessionSeq = 0;
 
 function preferLocalEar(): boolean {
   try {
-    return window.sessionStorage.getItem("trialpath-local-ear") === "1";
+    return window.sessionStorage.getItem("refera-local-ear") === "1";
   } catch {
     return false;
   }
@@ -89,7 +89,7 @@ function preferLocalEar(): boolean {
 
 function rememberLocalEar() {
   try {
-    window.sessionStorage.setItem("trialpath-local-ear", "1");
+    window.sessionStorage.setItem("refera-local-ear", "1");
   } catch {
     /* storage unavailable */
   }

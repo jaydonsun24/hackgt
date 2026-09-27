@@ -1,14 +1,14 @@
-# TrialPath — Devpost draft
+# Refera — Devpost draft
 
 Edit this before you submit. Do not claim Grok Voice. It is not in the build.
 
 ## Inspiration
 
-Patients at small and rural clinics are rarely offered a clinical trial. Their doctors do not have half an hour to search. Sponsors, at the same time, struggle to recruit outside large academic centers. TrialPath is a 30-second path from a de-identified note to a nearby recruiting study.
+Patients at small and rural clinics are rarely offered a clinical trial. Their doctors do not have half an hour to search. Sponsors, at the same time, struggle to recruit outside large academic centers. Refera is a 30-second path from a de-identified note to a nearby recruiting study.
 
 ## What it does
 
-A doctor speaks or types a de-identified note plus a clinic ZIP. TrialPath extracts only the facts that were stated, searches ClinicalTrials.gov for recruiting studies within driving distance, and ranks them with a checklist. It reads a short summary aloud. The doctor can print a referral packet. The patient can get a plain-language handout, including Spanish for the lung example, with an illustration when image generation is available.
+A doctor speaks or types a de-identified note plus a clinic ZIP. Refera extracts only the facts that were stated, searches ClinicalTrials.gov for recruiting studies within driving distance, and ranks them with a checklist. It reads a short summary aloud. The doctor can print a referral packet. The patient can get a plain-language handout, including Spanish for the lung example, with an illustration when image generation is available.
 
 Equity Lens shows the county's CDC Social Vulnerability Index and how far the nearest match is. The sponsor page shows **simulated** referral volume and makes the payment story explicit: sponsors pay per qualified referral from clinics they can't otherwise reach.
 
@@ -48,7 +48,7 @@ A coordinator workflow, site-confirmed eligibility, and coverage of more states 
 - **Originality:** a voice-first trial finder with no SMS. The doctor dictates a de-identified note and gets a spoken readback.
 - **Technical execution:** live ClinicalTrials.gov recruiting studies, Census geography, CDC SVI, and Grok ranking with a hallucination check on trial ids.
 - **Commercial fit:** sponsors pay per qualified referral from clinics they can't otherwise reach. The sponsor dashboard is simulated and labeled simulated.
-- TrialPath does **not** use SMS.
+- Refera does **not** use SMS.
 
 ### SpaceXAI
 
@@ -81,9 +81,9 @@ Tick the interest box at submission.
 ## Demo script
 
 1. A doctor in Americus, Georgia has a lung cancer patient out of standard options, and no time to search for trials.
-2. Speak or paste the lung example. Results appear, and TrialPath reads back the top match.
+2. Speak or paste the lung example. Results appear, and Refera reads back the top match.
 3. Open the referral packet, then the Spanish handout.
 4. Show Equity Lens, then the sponsor dashboard: why it matters, and who pays.
-5. TrialPath turns every underserved clinic into a trial on-ramp.
+5. Refera turns every underserved clinic into a trial on-ramp.
 
 Turn Demo mode on at the expo.

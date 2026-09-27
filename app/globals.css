@@ -9,11 +9,28 @@
 body {
   background: #f4f1ea;
   color: #1c2b33;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+::selection {
+  background: #f3dfb4;
+}
+
+/* Gold focus, in the spirit of the GOV.UK and NHS focus states: hard to miss on any surface. */
 :focus-visible {
-  outline: 2px solid #0e4d56;
-  outline-offset: 3px;
+  outline: 3px solid #e7c27a;
+  outline-offset: 0;
+  box-shadow: 0 0 0 5px #1c2b33;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #e7c27a;
+  outline-offset: 0;
+  border-color: #1c2b33;
+  box-shadow: inset 0 0 0 1px #1c2b33;
 }
 
 summary {
@@ -40,6 +57,21 @@ details[open] summary::after {
 
 summary::-webkit-details-marker {
   display: none;
+}
+
+/* Entrance targets for lib/motion.ts. Hidden until anime.js reveals them;
+   the delayed keyframe is a failsafe so content can never stay invisible. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    opacity: 0;
+    animation: reveal-failsafe 1ms linear 3s forwards;
+  }
+}
+
+@keyframes reveal-failsafe {
+  to {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -70,6 +102,8 @@ summary::-webkit-details-marker {
     overflow: visible !important;
     box-shadow: none !important;
     background: white;
+    transform: none !important;
+    opacity: 1 !important;
   }
 
   .no-print {

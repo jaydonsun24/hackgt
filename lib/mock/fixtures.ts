@@ -105,7 +105,7 @@ export const mockTrials: Trial[] = [
     nctId: "DEMO-0001",
     title: "Demo study of a stage III non-small cell lung cancer regimen after platinum chemotherapy",
     phases: ["Phase 2"],
-    sponsor: "TrialPath Demo Sponsor",
+    sponsor: "Refera Demo Sponsor",
     conditions: ["Non-small cell lung cancer", "Stage III lung cancer"],
     eligibilityText:
       "Inclusion: adults 18 years or older with stage III non-small cell lung cancer, ECOG 0 or 1, EGFR any status. Prior carboplatin or pemetrexed is allowed. Exclusion: a required washout after chemotherapy is confirmed by the site.",
@@ -113,7 +113,7 @@ export const mockTrials: Trial[] = [
     sex: "any",
     url: "#demo",
     nearestSite: site({
-      facility: "TrialPath Demo Cancer Center",
+      facility: "Refera Demo Cancer Center",
       city: "Albany",
       state: "GA",
       zip: "31701",
@@ -122,11 +122,11 @@ export const mockTrials: Trial[] = [
       distanceMiles: 32.3,
       contactName: "Demo Study Coordinator",
       contactPhone: "(229) 555-0148",
-      contactEmail: "coordinator@demo.trialpath.local",
+      contactEmail: "coordinator@demo.refera.local",
     }),
     sites: [
       site({
-        facility: "TrialPath Demo Cancer Center",
+        facility: "Refera Demo Cancer Center",
         city: "Albany",
         state: "GA",
         zip: "31701",
@@ -135,7 +135,7 @@ export const mockTrials: Trial[] = [
         distanceMiles: 32.3,
         contactName: "Demo Study Coordinator",
         contactPhone: "(229) 555-0148",
-        contactEmail: "coordinator@demo.trialpath.local",
+        contactEmail: "coordinator@demo.refera.local",
       }),
     ],
   },
@@ -161,7 +161,7 @@ export const mockTrials: Trial[] = [
       distanceMiles: 62.6,
       contactName: "Alex Morgan",
       contactPhone: "(478) 555-0194",
-      contactEmail: "research@demo.trialpath.local",
+      contactEmail: "research@demo.refera.local",
     }),
     sites: [
       site({
@@ -174,7 +174,7 @@ export const mockTrials: Trial[] = [
         distanceMiles: 62.6,
         contactName: "Alex Morgan",
         contactPhone: "(478) 555-0194",
-        contactEmail: "research@demo.trialpath.local",
+        contactEmail: "research@demo.refera.local",
       }),
     ],
   },
@@ -199,7 +199,7 @@ export const mockTrials: Trial[] = [
       distanceMiles: 56.7,
       contactName: "Jordan Lee",
       contactPhone: "(706) 555-0116",
-      contactEmail: "columbus@demo.trialpath.local",
+      contactEmail: "columbus@demo.refera.local",
     }),
     sites: [
       site({
@@ -212,7 +212,7 @@ export const mockTrials: Trial[] = [
         distanceMiles: 56.7,
         contactName: "Jordan Lee",
         contactPhone: "(706) 555-0116",
-        contactEmail: "columbus@demo.trialpath.local",
+        contactEmail: "columbus@demo.refera.local",
       }),
     ],
   },
@@ -223,7 +223,7 @@ export const mockTrialsDiabetes: Trial[] = [
     nctId: "DEMO-1001",
     title: "Demo study of additional therapy for type 2 diabetes on metformin",
     phases: ["Phase 3"],
-    sponsor: "TrialPath Demo Sponsor",
+    sponsor: "Refera Demo Sponsor",
     conditions: ["Type 2 diabetes mellitus"],
     eligibilityText:
       "Inclusion: adults with type 2 diabetes, HbA1c above 7.5, already taking metformin. BMI is recorded but a cutoff is not fully stated in this excerpt.",
@@ -241,7 +241,7 @@ export const mockTrialsDiabetes: Trial[] = [
       distanceMiles: 0.4,
       contactName: "Demo Coordinator",
       contactPhone: "(404) 555-0172",
-      contactEmail: "atlanta@demo.trialpath.local",
+      contactEmail: "atlanta@demo.refera.local",
     }),
     sites: [
       site({
@@ -254,7 +254,7 @@ export const mockTrialsDiabetes: Trial[] = [
         distanceMiles: 0.4,
         contactName: "Demo Coordinator",
         contactPhone: "(404) 555-0172",
-        contactEmail: "atlanta@demo.trialpath.local",
+        contactEmail: "atlanta@demo.refera.local",
       }),
     ],
   },
@@ -278,7 +278,7 @@ export const mockTrialsDiabetes: Trial[] = [
       distanceMiles: 6.2,
       contactName: "Sam Patel",
       contactPhone: "(404) 555-0133",
-      contactEmail: "decatur@demo.trialpath.local",
+      contactEmail: "decatur@demo.refera.local",
     }),
     sites: [
       site({
@@ -291,7 +291,7 @@ export const mockTrialsDiabetes: Trial[] = [
         distanceMiles: 6.2,
         contactName: "Sam Patel",
         contactPhone: "(404) 555-0133",
-        contactEmail: "decatur@demo.trialpath.local",
+        contactEmail: "decatur@demo.refera.local",
       }),
     ],
   },
@@ -302,7 +302,7 @@ export const mockTrialsBreast: Trial[] = [
     nctId: "DEMO-2001",
     title: "Demo study for newly diagnosed stage II HER2-positive breast cancer",
     phases: ["Phase 3"],
-    sponsor: "TrialPath Demo Sponsor",
+    sponsor: "Refera Demo Sponsor",
     conditions: ["HER2-positive breast cancer"],
     eligibilityText:
       "Inclusion: adults with stage II HER2-positive breast cancer and no prior systemic therapy for this cancer. Heart function must be confirmed by the site.",
@@ -319,7 +319,7 @@ export const mockTrialsBreast: Trial[] = [
       distanceMiles: 1.2,
       contactName: "Demo Coordinator",
       contactPhone: "(912) 555-0188",
-      contactEmail: "savannah@demo.trialpath.local",
+      contactEmail: "savannah@demo.refera.local",
     }),
     sites: [
       site({
@@ -332,7 +332,7 @@ export const mockTrialsBreast: Trial[] = [
         distanceMiles: 1.2,
         contactName: "Demo Coordinator",
         contactPhone: "(912) 555-0188",
-        contactEmail: "savannah@demo.trialpath.local",
+        contactEmail: "savannah@demo.refera.local",
       }),
     ],
   },
@@ -356,7 +356,7 @@ export const mockTrialsBreast: Trial[] = [
       distanceMiles: 22.4,
       contactName: "Riley Chen",
       contactPhone: "(843) 555-0160",
-      contactEmail: "harbor@demo.trialpath.local",
+      contactEmail: "harbor@demo.refera.local",
     }),
     sites: [
       site({
@@ -369,7 +369,7 @@ export const mockTrialsBreast: Trial[] = [
         distanceMiles: 22.4,
         contactName: "Riley Chen",
         contactPhone: "(843) 555-0160",
-        contactEmail: "harbor@demo.trialpath.local",
+        contactEmail: "harbor@demo.refera.local",
       }),
     ],
   },

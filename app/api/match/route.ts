@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     ? body.patientLanguage.trim().toLowerCase()
     : undefined;
 
-  if (request.headers.get("x-trialpath-demo") === "1") {
+  if (request.headers.get("x-refera-demo") === "1") {
     const cached = readMatchCache(text);
     if (cached) {
       return Response.json(

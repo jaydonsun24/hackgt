@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import type { PatientCriteria, RankedTrial } from "@/lib/contracts";
 import { checkLabel, sexLabel } from "@/lib/format";
+import { useModalMotion } from "@/lib/motion";
 
 function SignaturePad() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -87,7 +88,7 @@ function SignaturePad() {
   return (
     <div className="mt-6">
       <p className="text-sm font-medium">Signature</p>
-      <div className="relative mt-2 overflow-hidden rounded-xl border border-ink bg-paper">
+      <div className="relative mt-2 overflow-hidden rounded border border-ink bg-paper">
         <canvas
           ref={canvasRef}
           aria-label="Draw your signature"
@@ -119,7 +120,9 @@ export function ReferralModal({
 }) {
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLButtonElement>(null);
   const [clinician, setClinician] = useState("");
+  useModalMotion(backdropRef, dialogRef);
   const site = ranked.trial.nearestSite;
   const demo = ranked.trial.url.startsWith("#");
   const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
@@ -160,22 +163,29 @@ export function ReferralModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center p-3 sm:items-center sm:p-6">
-      <button type="button" className="no-print absolute inset-0 bg-ink/40" aria-label="Close referral packet" onClick={onClose} />
+      <button
+        ref={backdropRef}
+        type="button"
+        className="no-print absolute inset-0 bg-ink/50"
+        aria-label="Close referral packet"
+        onClick={onClose}
+      />
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="print-target relative max-h-[90vh] w-full max-w-3xl overflow-auto rounded-2xl bg-white p-6 shadow-card"
+        className="print-target relative max-h-[90vh] w-full max-w-3xl overflow-auto rounded-md border border-line bg-white p-6 shadow-overlay sm:p-8"
       >
         <div className="no-print flex justify-end">
-          <button type="button" onClick={onClose} className="rounded-full px-3 py-2 text-sm text-teal">
+          <button type="button" onClick={onClose} className={closeButton}>
+            <CloseIcon />
             Close
           </button>
         </div>
         <header className="border-b border-line pb-4">
-          <p className="text-sm font-medium text-teal">TrialPath referral packet</p>
-          <h2 id={titleId} className="mt-1 text-2xl font-semibold text-ink">
+          <p className="text-sm font-semibold text-teal">Refera referral packet</p>
+          <h2 id={titleId} className="mt-1 text-2xl font-semibold leading-snug text-ink">
             {ranked.trial.title}
           </h2>
           <p className="mt-1 text-sm text-muted">{today}</p>
@@ -242,7 +252,11 @@ export function ReferralModal({
           <SignaturePad />
         </section>
         <div className="no-print mt-6">
-          <button type="button" onClick={() => window.print()} className="min-h-11 rounded-full bg-teal px-4 py-2 text-sm font-semibold text-white">
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="min-h-11 rounded bg-teal px-5 py-2 text-sm font-semibold text-white hover:bg-teal-dark"
+          >
             Print / Save PDF
           </button>
         </div>
@@ -250,3 +264,15 @@ export function ReferralModal({
     </div>
   );
 }
+
+const closeButton =
+  "inline-flex items-center gap-1.5 rounded px-2 py-1.5 text-sm font-semibold text-teal underline decoration-teal/40 underline-offset-2 hover:decoration-teal";
+
+function CloseIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4 fill-none stroke-current" strokeWidth="2" strokeLinecap="round">
+      <path d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  );
+}
+

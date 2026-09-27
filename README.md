@@ -1,6 +1,6 @@
-# TrialPath
+# Refera
 
-TrialPath is a voice-first clinical trial finder for doctors at rural and underserved clinics. A doctor speaks or types a de-identified note and a clinic ZIP. TrialPath pulls recruiting studies from ClinicalTrials.gov within driving distance, checks them against the note, and reads back the closest match. The doctor can print a referral packet. The patient can get a short handout in their language.
+Refera is a voice-first clinical trial finder for doctors at rural and underserved clinics. A doctor speaks or types a de-identified note and a clinic ZIP. Refera pulls recruiting studies from ClinicalTrials.gov within driving distance, checks them against the note, and reads back the closest match. The doctor can print a referral packet. The patient can get a short handout in their language.
 
 Nothing about the patient is stored. There is no login and no database.
 
@@ -72,7 +72,7 @@ MOCK_AI=0 MOCK_DATA=0 npx tsx scripts/test-ai.ts
 
 ## Demo mode
 
-Demo mode is the checkbox in the header. It sends `x-trialpath-demo: 1`. If the note matches one of the three saved examples and `data/demo-cache/` has been built, the API replays that saved response instead of calling the network.
+Demo mode is the checkbox in the header. It sends `x-refera-demo: 1`. If the note matches one of the three saved examples and `data/demo-cache/` has been built, the API replays that saved response instead of calling the network.
 
 Build the cache once, with a key and the network:
 

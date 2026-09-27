@@ -1,4 +1,4 @@
-# TrialPath: Complete Build Spec (single builder, Cursor)
+# Refera: Complete Build Spec (single builder, Cursor)
 
 > **How to use this file**
 > 1. Create an empty folder, open it in **Cursor**, and save this file there as `SPEC.md`.
@@ -12,7 +12,7 @@
 
 **Phase 0**
 ```
-Read SPEC.md fully before doing anything. You are building TrialPath, following it exactly. Do Phase 0 only. Follow every rule in the "Rules for the AI" section. When Phase 0's "Done when" checks all pass, stop and give me a short summary plus anything I need to do manually.
+Read SPEC.md fully before doing anything. You are building Refera, following it exactly. Do Phase 0 only. Follow every rule in the "Rules for the AI" section. When Phase 0's "Done when" checks all pass, stop and give me a short summary plus anything I need to do manually.
 ```
 
 **Phases 1–7** (change the number each time)
@@ -55,21 +55,21 @@ If you fall behind, **cut in this order:** Grok Voice → Grok Imagine → Spons
 
 ---
 
-## What TrialPath is
+## What Refera is
 
 **One line:** a voice-first clinical trial finder for doctors at rural and underserved clinics.
 
 **Flow:**
 1. The doctor speaks or types a de-identified patient note plus the clinic ZIP.
 2. **Grok** extracts trial-relevant facts: condition, age, stage, prior treatments, biomarkers.
-3. TrialPath searches **ClinicalTrials.gov** for recruiting trials within driving distance.
+3. Refera searches **ClinicalTrials.gov** for recruiting trials within driving distance.
 4. **Grok** ranks the trials by eligibility fit, with criterion-by-criterion reasons.
-5. TrialPath reads a short summary aloud.
+5. Refera reads a short summary aloud.
 6. The doctor gets a printable **referral packet**. The patient gets a **handout** in their language with a **Grok Imagine** illustration.
 7. **Equity Lens:** the clinic county's CDC Social Vulnerability Index and the distance to the nearest match.
 8. **Sponsor Dashboard:** simulated referral stats. This is the "who pays" story.
 
-**Why it matters:** patients at small or rural clinics are rarely offered trials because their doctors have no time to search. Trial sponsors struggle to recruit diverse patients. TrialPath turns a 30-minute search into 30 seconds.
+**Why it matters:** patients at small or rural clinics are rarely offered trials because their doctors have no time to search. Trial sponsors struggle to recruit diverse patients. Refera turns a 30-minute search into 30 seconds.
 
 **Prizes we're targeting (every feature maps to one):**
 - **A Marina's Mission (Social Good track):** equitable trial access, shown by the Equity Lens.
@@ -239,7 +239,7 @@ export interface VoiceEngine {
    - `/api/match` pipeline: extract → geocode(criteria.zip) → search → rank → readback → equity(geo, results[0]?.trial.nearestSite?.distanceMiles). It records `timingsMs` per stage and returns `ApiError {stage}` on failure.
    - `/api/handout` and `/api/sponsor-stats`.
 7. A placeholder `app/page.tsx`: textarea prefilled with query A, a ZIP input, and a button that POSTs `/api/match` and shows the raw JSON.
-8. A `README.md` covering what TrialPath is and how to run it.
+8. A `README.md` covering what Refera is and how to run it.
 9. `git init` and commit.
 
 **Done when:** `npm run check` passes. With `npm run dev`, the placeholder page returns mock JSON from `/api/match`.
@@ -312,7 +312,7 @@ export interface VoiceEngine {
 
 **Build:**
 1. **Shell:**
-   - Header with the "TrialPath" wordmark, the tagline "Clinical trials for every clinic", and a link to `/sponsor`.
+   - Header with the "Refera" wordmark, the tagline "Clinical trials for every clinic", and a link to `/sponsor`.
    - Footer with the privacy line.
    - A small "Demo data" badge when `mocked.ai` or `mocked.data` is true.
 2. **Query panel:**
@@ -405,7 +405,7 @@ export interface VoiceEngine {
 **Build:**
 1. **Demo cache:**
    - `scripts/build-demo-cache.ts` runs the **real** pipeline on queries A, B and C and saves full `MatchResponse`s plus the query A Spanish handout to `data/demo-cache/`.
-   - In `/api/match` and `/api/handout`: when the request has the header `x-trialpath-demo: 1` and the input matches a cached query, serve the cache.
+   - In `/api/match` and `/api/handout`: when the request has the header `x-refera-demo: 1` and the input matches a cached query, serve the cache.
    - A subtle "Demo mode" toggle in the UI sends that header. It's insurance against the expo Wi-Fi.
 2. **Polish:**
    - Page title and meta description, and a favicon (a simple teal path/marker mark).
@@ -439,9 +439,9 @@ Re-read SPEC.md and the codebase. Draft our Devpost write-up in markdown (Inspir
 
 **Demo script (about 2 min)**
 1. **Hook, 15s:** "A doctor in Americus, Georgia has a lung cancer patient out of standard options, and no time to search for trials."
-2. **Live voice query, 45s:** results appear, and TrialPath reads back the top match.
+2. **Live voice query, 45s:** results appear, and Refera reads back the top match.
 3. **Outputs, 30s:** the referral packet, then the Spanish handout with its illustration.
 4. **Equity Lens + Sponsor Dashboard, 20s:** why it matters, and who pays.
-5. **Close, 10s:** "TrialPath turns every underserved clinic into a trial on-ramp."
+5. **Close, 10s:** "Refera turns every underserved clinic into a trial on-ramp."
 
 **At the expo:** turn demo mode on. Lead with the patient story, not the tech. Tell Impiricus judges the commercial model in one sentence. Mention the Impiricus rep you met.

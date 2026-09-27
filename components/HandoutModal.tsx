@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import type { ApiError, Handout, HandoutRequest, PatientCriteria, RankedTrial } from "@/lib/contracts";
 import { LANGUAGE_OPTIONS, languageName } from "@/lib/format";
 import { questionsHeading } from "@/lib/ai/handout-copy";
+import { useModalMotion } from "@/lib/motion";
 
 export function HandoutModal({
   ranked,
@@ -22,7 +23,9 @@ export function HandoutModal({
 }) {
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLButtonElement>(null);
   const [currentLanguage, setCurrentLanguage] = useState(language);
+  useModalMotion(backdropRef, dialogRef);
   const [handout, setHandout] = useState<Handout | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -43,7 +46,7 @@ export function HandoutModal({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(demo ? { "x-trialpath-demo": "1" } : {}),
+        ...(demo ? { "x-refera-demo": "1" } : {}),
       },
       body: JSON.stringify(body),
       signal: controller.signal,
@@ -103,13 +106,19 @@ export function HandoutModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center p-3 sm:items-center sm:p-6">
-      <button type="button" className="no-print absolute inset-0 bg-ink/40" aria-label="Close patient handout" onClick={onClose} />
+      <button
+        ref={backdropRef}
+        type="button"
+        className="no-print absolute inset-0 bg-ink/50"
+        aria-label="Close patient handout"
+        onClick={onClose}
+      />
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="print-target relative max-h-[90vh] w-full max-w-3xl overflow-auto rounded-2xl bg-white p-6 shadow-card"
+        className="print-target relative max-h-[90vh] w-full max-w-3xl overflow-auto rounded-md border border-line bg-white p-6 shadow-overlay sm:p-8"
       >
         <div className="no-print flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <label className="text-sm font-medium text-ink" htmlFor="handout-language">
@@ -118,7 +127,7 @@ export function HandoutModal({
               id="handout-language"
               value={currentLanguage}
               onChange={(event) => setCurrentLanguage(event.target.value)}
-              className="ml-2 rounded-lg border border-line bg-white px-2 py-2"
+              className="ml-2 rounded border border-[#a79f93] bg-white px-2.5 py-2"
             >
               {LANGUAGE_OPTIONS.map((option) => (
                 <option key={option.code} value={option.code}>
@@ -127,7 +136,8 @@ export function HandoutModal({
               ))}
             </select>
           </label>
-          <button type="button" onClick={onClose} className="self-start rounded-full px-3 py-2 text-sm text-teal">
+          <button type="button" onClick={onClose} className={`self-start ${closeButton}`}>
+            <CloseIcon />
             Close
           </button>
         </div>
@@ -136,15 +146,16 @@ export function HandoutModal({
           <div className="mt-4" aria-live="polite">
             <p className="sr-only">Writing the handout in {languageName(currentLanguage)}.</p>
             <div className="animate-pulse space-y-3" aria-hidden="true">
-              <div className="h-40 rounded-xl bg-line" />
-              <div className="h-6 w-2/3 rounded bg-line" />
-              <div className="h-4 rounded bg-line" />
-              <div className="h-4 rounded bg-line" />
+              <div className="aspect-video rounded bg-line/70" />
+              <div className="h-7 w-2/3 rounded bg-line/70" />
+              <div className="h-4 rounded bg-line/70" />
+              <div className="h-4 w-5/6 rounded bg-line/70" />
+              <div className="h-4 w-4/6 rounded bg-line/70" />
             </div>
           </div>
         ) : null}
         {error ? (
-          <p role="alert" className="mt-4 text-sm text-copper">
+          <p role="alert" className="mt-4 border-l-4 border-copper bg-sand px-3 py-2 text-sm text-ink">
             {error}
           </p>
         ) : null}
@@ -155,10 +166,10 @@ export function HandoutModal({
               <img
                 src={handout.illustrationUrl}
                 alt="Friendly illustration of a clinic visit, with no text."
-                className="aspect-video w-full rounded-xl bg-paper object-cover"
+                className="aspect-video w-full rounded bg-paper object-cover"
               />
             ) : null}
-            <h2 id={titleId} className="mt-4 text-2xl font-semibold text-ink">
+            <h2 id={titleId} className="mt-5 text-2xl font-semibold leading-snug text-ink">
               {handout.title}
             </h2>
             {handout.sections.map((section) => (
@@ -180,11 +191,15 @@ export function HandoutModal({
               <button
                 type="button"
                 onClick={() => onReadAloud(spoken, handout.language)}
-                className="min-h-11 rounded-full border border-teal px-4 py-2 text-sm font-semibold text-teal"
+                className="min-h-11 rounded border border-teal px-5 py-2 text-sm font-semibold text-teal hover:bg-teal-soft"
               >
                 Read aloud
               </button>
-              <button type="button" onClick={() => window.print()} className="min-h-11 rounded-full bg-teal px-4 py-2 text-sm font-semibold text-white">
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="min-h-11 rounded bg-teal px-5 py-2 text-sm font-semibold text-white hover:bg-teal-dark"
+              >
                 Print / Save PDF
               </button>
             </div>
@@ -194,3 +209,15 @@ export function HandoutModal({
     </div>
   );
 }
+
+const closeButton =
+  "inline-flex items-center gap-1.5 rounded px-2 py-1.5 text-sm font-semibold text-teal underline decoration-teal/40 underline-offset-2 hover:decoration-teal";
+
+function CloseIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4 fill-none stroke-current" strokeWidth="2" strokeLinecap="round">
+      <path d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  );
+}
+
