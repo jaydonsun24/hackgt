@@ -1,5 +1,3 @@
-// FROZEN after Phase 0. Ask before changing.
-
 export interface MatchRequest {
   text: string;            // de-identified note or transcript
   zip?: string;            // clinic ZIP; may also be extracted from text
