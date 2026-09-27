@@ -55,6 +55,8 @@ function voiceScore(voice: SpeechSynthesisVoice, lang: string): number {
   const name = voice.name.toLowerCase();
   const voiceLang = voice.lang.toLowerCase().replace("_", "-");
   if (NOVELTY_VOICE.test(name)) return -100;
+  // Never read one language with another language's voice.
+  if (voiceLang.slice(0, 2) !== lang.slice(0, 2)) return -1;
   const english = lang.startsWith("en");
   let score = 0;
   if (english) {
@@ -362,7 +364,7 @@ export const browserVoice: VoiceEngine = {
     const english = wanted.startsWith("en");
     const match = [...voices].sort((a, b) => voiceScore(b, wanted) - voiceScore(a, wanted))[0];
     if (match && voiceScore(match, wanted) > 0) utterance.voice = match;
-    utterance.lang = english ? match?.lang || "en-GB" : match?.lang || lang || "en-GB";
+    utterance.lang = utterance.voice?.lang || (english ? "en-GB" : wanted);
     if (english) {
       utterance.pitch = 0.82;
       utterance.rate = 0.9;

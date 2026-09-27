@@ -13,6 +13,7 @@ export function useVoice() {
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const closingRef = useRef(false);
+  const speakSeqRef = useRef(0);
 
   useEffect(() => {
     const engine = getVoiceEngine();
@@ -64,15 +65,18 @@ export function useVoice() {
   async function speak(text: string, lang?: string) {
     const engine = engineRef.current;
     if (!engine) return;
+    const mine = ++speakSeqRef.current;
     setSpeaking(true);
     try {
       await engine.speak(text, lang);
     } finally {
-      setSpeaking(false);
+      // A newer speak() owns the flag now; don't clear it when this one is cut off.
+      if (speakSeqRef.current === mine) setSpeaking(false);
     }
   }
 
   function stopSpeaking() {
+    speakSeqRef.current += 1;
     engineRef.current?.stopSpeaking();
     setSpeaking(false);
   }

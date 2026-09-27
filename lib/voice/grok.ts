@@ -158,6 +158,59 @@ async function playBytes(bytes: ArrayBuffer, contentType: string, mine: number):
   }
 }
 
+// Long text goes to xAI in pieces so playback starts after the first one instead of the whole handout.
+const FIRST_CHUNK = 200;
+const LATER_CHUNK = 600;
+
+// Chinese, Japanese and Korean characters carry about a word each, so they count triple.
+const WIDE = /[ᄀ-ᇿ぀-ヿ㐀-鿿가-힯豈-﫿]/g;
+
+function size(text: string): number {
+  return text.length + 2 * (text.match(WIDE)?.length ?? 0);
+}
+
+function splitLong(piece: string, max: number): string[] {
+  if (size(piece) <= max) return [piece];
+  const out: string[] = [];
+  if (/\s/.test(piece)) {
+    let line = "";
+    for (const word of piece.split(/\s+/)) {
+      if (line && size(line) + size(word) + 1 > max) {
+        out.push(line);
+        line = word;
+      } else {
+        line = line ? `${line} ${word}` : word;
+      }
+    }
+    if (line) out.push(line);
+    return out;
+  }
+  const step = Math.max(1, Math.floor(max / 3));
+  for (let index = 0; index < piece.length; index += step) out.push(piece.slice(index, index + step));
+  return out;
+}
+
+export function speechChunks(text: string): string[] {
+  const sentences = text
+    .split(/(?<=[.!?])\s+|(?<=[。！？])/)
+    .map((sentence) => sentence.trim())
+    .filter(Boolean);
+  const chunks: string[] = [];
+  let current = "";
+  for (const sentence of sentences) {
+    for (const part of splitLong(sentence, LATER_CHUNK)) {
+      const max = chunks.length === 0 ? FIRST_CHUNK : LATER_CHUNK;
+      if (current && size(current) + size(part) + 1 > max) {
+        chunks.push(current);
+        current = "";
+      }
+      current = current ? `${current} ${part}` : part;
+    }
+  }
+  if (current) chunks.push(current);
+  return chunks;
+}
+
 async function fetchGrokAudio(text: string, lang: string | undefined, mine: number): Promise<{ bytes: ArrayBuffer; contentType: string } | null> {
   const controller = new AbortController();
   inflight = controller;
@@ -367,26 +420,34 @@ export const grokVoice: VoiceEngine = {
     browserVoice.stopSpeaking();
     unlockAudio();
     if (!text.trim()) return;
-    let audio: { bytes: ArrayBuffer; contentType: string } | null = null;
-    try {
-      audio = await fetchGrokAudio(text, lang, mine);
-    } catch (error) {
-      if (mine !== generation) return;
-      if (error && typeof error === "object" && "name" in error && error.name === "AbortError") return;
-      // Only use the Mac/browser voice when the xAI TTS request itself failed.
-      stopPlayback();
-      if (mine !== generation) return;
-      await browserVoice.speak(text, lang);
-      return;
-    }
-    if (!audio || mine !== generation) return;
-    try {
-      await playBytes(audio.bytes, audio.contentType, mine);
-    } catch (error) {
-      if (mine !== generation) return;
-      if (error && typeof error === "object" && "name" in error && error.name === "AbortError") return;
-      // Grok audio arrived — do not fall back to speechSynthesis (Arthur / en-GB).
-      stopPlayback();
+    const chunks = speechChunks(text);
+    const isAbort = (error: unknown) =>
+      !!error && typeof error === "object" && "name" in error && error.name === "AbortError";
+    // Fetch the next piece while the current one plays.
+    let pending: Promise<{ bytes: ArrayBuffer; contentType: string } | null> | null = fetchGrokAudio(chunks[0], lang, mine);
+    for (let index = 0; index < chunks.length && pending; index += 1) {
+      let audio: { bytes: ArrayBuffer; contentType: string } | null = null;
+      try {
+        audio = await pending;
+      } catch (error) {
+        if (mine !== generation || isAbort(error)) return;
+        // Only use the Mac/browser voice when the xAI TTS request itself failed.
+        stopPlayback();
+        if (mine !== generation) return;
+        await browserVoice.speak(chunks.slice(index).join(" "), lang);
+        return;
+      }
+      if (!audio || mine !== generation) return;
+      pending = index + 1 < chunks.length ? fetchGrokAudio(chunks[index + 1], lang, mine) : null;
+      pending?.catch(() => undefined);
+      try {
+        await playBytes(audio.bytes, audio.contentType, mine);
+      } catch (error) {
+        if (mine !== generation || isAbort(error)) return;
+        // Grok audio arrived — do not fall back to speechSynthesis (Arthur / en-GB).
+        stopPlayback();
+        return;
+      }
     }
   },
   stopSpeaking() {

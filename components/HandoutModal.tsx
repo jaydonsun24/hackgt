@@ -13,6 +13,8 @@ export function HandoutModal({
   demo,
   onClose,
   onReadAloud,
+  speaking,
+  onStopReading,
 }: {
   ranked: RankedTrial;
   criteria: PatientCriteria;
@@ -20,6 +22,8 @@ export function HandoutModal({
   demo: boolean;
   onClose: () => void;
   onReadAloud: (text: string, language: string) => void;
+  speaking: boolean;
+  onStopReading: () => void;
 }) {
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -126,7 +130,10 @@ export function HandoutModal({
             <select
               id="handout-language"
               value={currentLanguage}
-              onChange={(event) => setCurrentLanguage(event.target.value)}
+              onChange={(event) => {
+                onStopReading();
+                setCurrentLanguage(event.target.value);
+              }}
               className="ml-2 rounded border border-[#a79f93] bg-white px-2.5 py-2"
             >
               {LANGUAGE_OPTIONS.map((option) => (
@@ -190,10 +197,11 @@ export function HandoutModal({
             <div className="no-print mt-6 flex flex-col gap-2 sm:flex-row">
               <button
                 type="button"
-                onClick={() => onReadAloud(spoken, handout.language)}
+                onClick={() => (speaking ? onStopReading() : onReadAloud(spoken, handout.language))}
+                aria-pressed={speaking}
                 className="min-h-11 rounded border border-teal px-5 py-2 text-sm font-semibold text-teal hover:bg-teal-soft"
               >
-                Read aloud
+                {speaking ? "Stop reading" : "Read aloud"}
               </button>
               <button
                 type="button"

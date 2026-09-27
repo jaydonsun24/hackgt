@@ -269,8 +269,13 @@ export default function HomePage() {
           criteria={criteria}
           language={criteria.patientLanguage || language}
           demo={demo}
-          onClose={() => setHandout(null)}
+          onClose={() => {
+            voice.stopSpeaking();
+            setHandout(null);
+          }}
           onReadAloud={(spoken, lang) => void voice.speak(spoken, lang)}
+          speaking={voice.speaking}
+          onStopReading={() => voice.stopSpeaking()}
         />
       ) : null}
     </div>
