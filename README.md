@@ -28,7 +28,7 @@ Demo mode (the checkbox in the header) replays saved responses for the three sam
 ## Data
 
 - ClinicalTrials.gov API v2
-- Census 2024 Gazetteer and the 2020 ZCTA-to-county file, bundled in `data/zips.json` (Georgia plus a few other ZIPs)
-- CDC/ATSDR Social Vulnerability Index 2022, Georgia counties, in `data/svi-ga-2022.csv`
+- Census 2024 Gazetteer and the 2020 ZCTA-to-county file, bundled in `data/zips.json` (Georgia, Vienna VA, and a few other ZIPs)
+- CDC/ATSDR Social Vulnerability Index 2022, Georgia counties plus Fairfax County, VA, in `data/svi-2022.csv`
 
 The sponsor dashboard numbers are simulated.

@@ -14,7 +14,7 @@ let table: Map<string, SviRow> | null = null;
 
 function loadTable(): Map<string, SviRow> {
   if (table) return table;
-  const file = path.join(process.cwd(), "data", "svi-ga-2022.csv");
+  const file = path.join(process.cwd(), "data", "svi-2022.csv");
   const text = fs.readFileSync(file, "utf8");
   const map = new Map<string, SviRow>();
   const lines = text.split(/\r?\n/).filter((line) => line.trim().length > 0);
